@@ -25,129 +25,112 @@ class Sudoku extends Component {
         this.SRN = Math.sqrt(this.N);
 		this.mat = tmp;
 
-        this.fillValues();
-    }
- 
-    // Sudoku Generator
-    fillValues() {
-        // Fill the diagonal of SRN x SRN matrices
-        console.log(this.fill(0, 0, [1, 2, 3, 4, 5, 6, 7, 8, 9]));
- 
-        // Fill remaining blocks
-        //this.fillRemaining(0, 3);
- 
-        // Remove Randomly K digits to make game
-        //this.removeKDigits();
-    }
- 
-	fill(i, j, numbers){
-		let num;
-		let count = 0;
-
-		if(i >= 9 && j >= 9){
-			console.log("finished");
-			return true;
-		}
-
-		let newI = i+1;
-		let newJ = j;
-
-		if(newI >= 9){
-			newI = 0;
-			newJ++;
-		}
-
-		let tmp = numbers;
-
-		do{
-			//console.log("Iteration: " + count);
-			if (count >= numbers.length) return false;
-
-			num = numbers[count];
-			count++
-		}while(!this.checkIfSafe(i, j, num));
-
-		console.log("Chosen number: " + num);
-		//console.log(tmp);
-
-		delete tmp[count];
+		//window.requestIdleCallback(() => this.map = this.solve(this.mat));
+		for(let i = 0; i<3; i++)
+			this.mat[Math.floor(Math.random()*9)][Math.floor(Math.random()*9)] = 1+Math.floor(Math.random()*9);
 		
-		if(this.fill(newI, newJ, tmp)){
-			this.mat[i][j] = num;
-			return true;
-		}else{
-
-			this.mat[i][j] = 0;
-
-			let prevI = i-1;
-			let prevJ = j;
-
-			if(prevI < 0){
-				prevI = 8;
-				prevJ = j-1;
-			}
-
-			return this.fill(prevI, prevJ, tmp);
+		this.mat = this.solve(this.mat);
+    }
+ 
+	shuffle(array) {
+		var currentIndex = array.length,  randomIndex;
+	  
+		// While there remain elements to shuffle...
+		while (currentIndex != 0) {
+			// Pick a remaining element...
+			randomIndex = Math.floor(Math.random() * currentIndex);
+			currentIndex--;
+		
+			// And swap it with the current element.
+			[array[currentIndex], array[randomIndex]] = [
+			array[randomIndex], array[currentIndex]];
 		}
+	  
+		return array;
 	}
 
+	nextEmptySpot(mat) {
+		for (let i = 0; i < 9; i++) {
+			for (let j = 0; j < 9; j++) {
+				if (mat[i][j] === 0) 
+					return [i, j];
+			}
+		}
 
-    // Returns false if given 3 x 3 block contains num.
-    unUsedInBox(rowStart, colStart, num) {
-        for (let i = 0; i<this.SRN; i++)
-            for (let j = 0; j<this.SRN; j++)
-                if (this.mat[rowStart+i][colStart+j]===num)
-                    return false;
- 
-        return true;
-    }
- 
-    // Check if safe to put in cell
-    checkIfSafe(i, j, num) {
-        return (this.unUsedInRow(i, num) &&
-				this.unUsedInCol(j, num) &&
-				this.unUsedInBox(i-i%this.SRN, j-j%this.SRN, num));
-    }
- 
-    // check in the row for existence
-    unUsedInRow(i, num) {
-        for (let j = 0; j<this.N; j++)
-           if (this.mat[i][j] === num)
-                return false;
-        return true;
-    }
- 
-    // check in the row for existence
-    unUsedInCol(j, num) {
-        for (let i = 0; i<this.N; i++)
-            if (this.mat[i][j] === num)
-                return false;
-        return true;
-    }
- 
-    // Remove the K no. of digits to
-    // complete game
-    removeKDigits() {
-        let count = this.K;
-        while (count !== 0) {
+		return [-1, -1];
+	}
 
-            let cellId = this.randomGenerator(this.N*this.N)-1;
- 
-            // System.out.prletln(cellId);
-            // extract coordinates i  and j
-            let i = (cellId/this.N);
-            let j = cellId%9;
-            if (j !== 0)
-                j = j - 1;
- 
-            // System.out.prletln(i+" "+j);
-            if (this.mat[i][j] !== 0) {
+    checkRow(mat, row, value){
+		for(let i = 0; i < mat[row].length; i++) {
+			if(mat[row][i] === value) {
+				return false;
+			}
+		}
+	   
+		return true;
+	}
 
-                count--;
-                this.mat[i][j] = 0;
-            }
-        }
-    }
+	checkColumn(mat, column, value){
+		for(let i = 0; i < mat.length; i++) {
+			if(mat[i][column] === value) {
+				return false;
+			}
+		}
+	
+		return true;
+	}
+
+	checkSquare(mat, row, column, value){
+		let boxRow = Math.floor(row / 3) * 3;
+		let boxCol = Math.floor(column / 3) * 3;
+		
+		for (var r = 0; r < 3; r++){
+			for (var c = 0; c < 3; c++){
+				if (mat[boxRow + r][boxCol + c] === value)
+					return false;
+			}
+		}
+
+		return true;
+	}
+
+	checkValue(mat, row, column, value) {
+		if(this.checkRow(mat, row, value) &&
+			this.checkColumn(mat, column, value) &&
+			this.checkSquare(mat, row, column, value)) {
+			return true;
+		}
+		
+		return false; 
+	}
+
+	randNum(){
+		return Math.floor(Math.random()*this.N)+1;
+	}
+
+	solve(mat) {
+		let emptySpot = this.nextEmptySpot(mat);
+		let row = emptySpot[0];
+		let col = emptySpot[1];
+		
+		// there is no more empty spots
+		if (row === -1){
+			return mat;
+		}
+
+		let nums = this.shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+		nums.forEach(num => {
+			if(this.checkValue(mat, row, col, num)){
+				mat[row][col] = num;
+				this.solve(mat);
+			}
+		});
+
+		if (this.nextEmptySpot(mat)[0] !== -1)
+			mat[row][col] = 0;
+	
+		return mat;
+	}
 
 	render(){
 		let rows = this.mat.map((item, i) => {
