@@ -1,0 +1,23 @@
+table.sudoku{
+	border-collapse: collapse;
+
+	border: 2px solid black;
+
+	td {
+		width: 2ch;
+		height: 1.5ch;
+
+		text-align: center;
+
+		border: 1px solid gray;
+		border-spacing: 0;
+
+		&:nth-child(3n):not(:last-child) {
+			border-right: 2px solid black;
+		}
+	}
+
+	tr:nth-child(3n):not(:last-child){
+		border-bottom: 2px solid black;
+	}
+}
