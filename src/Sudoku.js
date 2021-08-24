@@ -181,6 +181,20 @@ class Sudoku extends Component {
 		this.showComplete = !this.showComplete;
 	}
 
+	checkInput = (i, j, e) => {
+		let val = Number(e.target.value);
+		let correct = this.mat[i][j] === val;
+		let empty = "" === e.target.value;
+
+		if(!empty){
+			console.log(val + " is the " + (correct?"correct":"wrong") + " answer");
+
+			e.target.className = correct?"correct":"wrong";
+		}else{
+			e.target.className = "";
+		}
+	}
+
 	render(){
 		let rows;
 		
@@ -204,7 +218,7 @@ class Sudoku extends Component {
 						);
 					}else{
 						return (
-							<td className="empty" key={j}><textarea></textarea></td>
+							<td className="empty" key={j}><textarea onBlur={e => this.checkInput(i, j, e)} maxLength={1} cols={1} rows={1}></textarea></td>
 						);
 					}
 				});
