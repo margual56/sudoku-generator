@@ -1,18 +1,25 @@
 .sudoku-container{
 	max-width: fit-content;
 
+	margin: 1em auto;
+
 	table.sudoku{
 		border-collapse: collapse;
 		border: 2px solid black;
 
+		font-size: 2em;
+
 		td {
 			width: 2ch;
-			height: 1.5ch;
+			height: 1.2ch;
 
 			text-align: center;
 
 			border: 1px solid gray;
 			border-spacing: 0;
+
+			padding: 0;
+			margin: 0;
 
 			&.empty{
 				background-color: #00000010;
@@ -24,11 +31,10 @@
 		}
 
 		textarea {
-			width: auto;
-			max-width: 2ch;
+			display: block;
 
-			height: auto;
-			max-height: 2ch;
+			width: inherit;
+			height: calc(100% + 1px);
 
 			overflow: hidden;
 
@@ -46,6 +52,14 @@
 			margin: 0;
 
 			background-color: transparent;
+
+			&.wrong {
+				background-color: #ff999990;
+			}
+
+			&.correct {
+				background-color: #99ff9990;
+			}
 		}
 
 		tr:nth-child(3n):not(:last-child){
@@ -58,5 +72,9 @@
 		justify-content: space-between;
 
 		margin-top: 1em;
+
+		button{
+			font-size: inherit;
+		}
 	}
 }

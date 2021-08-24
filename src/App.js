@@ -1,14 +1,11 @@
 import Sudoku from './Sudoku';
 
+import './styles/main.scss';
 
 function App() {
 	return (
 		<div className="App">
-			<header className="App-header">
-				
-				<Sudoku/>
-				
-			</header>
+			<Sudoku/>
 		</div>
 	);
 }
