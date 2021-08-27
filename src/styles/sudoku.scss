@@ -7,10 +7,10 @@
 		border-collapse: collapse;
 		border: 2px solid black;
 
-		font-size: 2em;
+		font-size: min(8vw, 8vh);
 
 		td {
-			width: 2ch;
+			width: 2.25ch;
 			height: 1.2ch;
 
 			text-align: center;

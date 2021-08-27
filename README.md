@@ -12,6 +12,6 @@ This project uses a naive approach (brute-force) to generate a random Sudoku. Th
 The minimum number of pre-filled cells for any given Sudoku is 17. Less than that and there would be more than one possible solutions (which makes it practically impossible to solve).
 
 ## Upcoming features
-* Difficulty selector
-* Responsiveness (fit into a mobile screen)
-* Toggle switch to hide/show "Right/Wrong" input values
+- [ ] Difficulty selector
+- [x] Responsiveness (fit into a mobile screen)
+- [ ] Toggle switch to hide/show "Right/Wrong" input values
