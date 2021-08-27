@@ -14,4 +14,4 @@ The minimum number of pre-filled cells for any given Sudoku is 17. Less than tha
 ## Upcoming features
 - [ ] Difficulty selector
 - [x] ~~Responsiveness (fit into a mobile screen)~~
-- [ ] Toggle switch to hide/show "Right/Wrong" input values
+- [x] ~~Toggle switch to hide/show "Right/Wrong" input values~~

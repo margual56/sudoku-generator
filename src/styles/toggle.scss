@@ -1,0 +1,70 @@
+@use '_toggle' as toggle;
+
+$before-size: toggle.$height - toggle.$margin * 2;
+
+.switch {
+	position: relative;
+	display: inline-block;
+	width: toggle.$width;
+	height: toggle.$height;
+
+	.slider {
+		position: absolute;
+		cursor: pointer;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: toggle.$bg-color-unchecked;
+		transition: .4s;
+
+		&:before {
+			position: absolute;
+			content: "";
+			height: $before-size;
+			width: $before-size;
+			left: toggle.$margin;
+			bottom: toggle.$margin;
+			background-color: toggle.$fg-color;
+			-webkit-transition: .4s;
+			transition: .4s;
+		}
+
+
+		/* Rounded sliders */
+		&.round {
+			border-radius: toggle.$height;
+
+			&:before {
+				border-radius: 50%;
+			}
+		}
+	}
+
+	input {
+		opacity: 0;
+		width: 0;
+		height: 0;
+
+		&:checked + .slider {
+			background-color: toggle.$bg-color-checked;
+		}
+
+		&:focus + .slider {
+			box-shadow: 0 0 1px toggle.$bg-color-checked;
+		}
+
+		&:checked + .slider:before {
+			transform: translateX(toggle.$width - $before-size - toggle.$margin * 2);
+		}
+	}
+}
+
+.toggle {
+	display: flex;
+
+	flex-direction: column;
+	align-items: center;
+
+	margin-top: 1em;
+}

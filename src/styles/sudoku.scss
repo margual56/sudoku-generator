@@ -7,7 +7,9 @@
 		border-collapse: collapse;
 		border: 2px solid black;
 
-		font-size: min(8vw, 8vh);
+		margin: auto;
+
+		font-size: min(8vw, 8vh, 3rem);
 
 		td {
 			width: 2.25ch;
@@ -28,37 +30,38 @@
 			&:nth-child(3n):not(:last-child) {
 				border-right: 2px solid black;
 			}
-		}
 
-		textarea {
-			display: block;
+			textarea {
+				display: block;
 
-			width: inherit;
-			height: calc(100% + 1px);
+				width: inherit;
+				height: calc(100% + 1px);
 
-			overflow: hidden;
+				overflow: hidden;
 
-			text-align: center;
-			vertical-align: middle;
+				text-align: center;
 
-			resize: none;
-			border: none;
+				resize: none;
+				border: none;
 
-			font-weight: inherit;
-			font-size: inherit;
-			font-family: inherit;
+				font-weight: inherit;
+				font-size: inherit;
+				font-family: inherit;
 
-			padding: 0;
-			margin: 0;
+				padding: 0;
+				margin: 0;
 
-			background-color: transparent;
-
-			&.wrong {
-				background-color: #ff999990;
+				background-color: transparent;
 			}
 
-			&.correct {
-				background-color: #99ff9990;
+			&.realtime{
+				textarea.wrong {
+					background-color: #ff999990;
+				}
+
+				textarea.correct {
+					background-color: #99ff9990;
+				}
 			}
 		}
 
@@ -69,12 +72,24 @@
 
 	.buttons{
 		display: flex;
+		flex-wrap: wrap;
 		justify-content: space-between;
 
 		margin-top: 1em;
 
 		button{
 			font-size: inherit;
+
+			padding: 0.5em;
+			margin: 0;
+		}
+
+		& > * {
+			flex: 1 1 33%;
+		}
+
+		& > .spacer {
+			flex-basis: 5%;
 		}
 	}
 }
