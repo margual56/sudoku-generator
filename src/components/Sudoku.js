@@ -9,8 +9,9 @@ class Sudoku extends Component {
 	mat = null;
 	matIncomplete = null;
 	N = 9; // number of columns/rows.
-	K = 60; // No. Of missing digits
+	K = 40; // No. Of missing digits
 	SRN = -1; // square root of N
+	maxIterations = 9999;
 
     // Constructor
     constructor(props) {
@@ -38,7 +39,7 @@ class Sudoku extends Component {
 		for(let i = 0; i<3; i++)
 			this.mat[Math.floor(Math.random()*9)][Math.floor(Math.random()*9)] = 1+Math.floor(Math.random()*9);
 		
-		this.mat = this.solve(this.mat);
+		this.mat = this.solve(this.mat, 0);
 		this.matIncomplete = clone(this.mat);
 
 		this.matIncomplete = this.unSolveK(this.matIncomplete, this.K);
@@ -62,7 +63,7 @@ class Sudoku extends Component {
 		for(let i = 0; i<3; i++)
 			this.mat[Math.floor(Math.random()*9)][Math.floor(Math.random()*9)] = 1+Math.floor(Math.random()*9);
 		
-		this.mat = this.solve(this.mat);
+		this.mat = this.solve(this.mat, 0);
 
 		this.matIncomplete = clone(this.mat);
 		this.matIncomplete = this.unSolveK(this.matIncomplete, this.K);
@@ -144,7 +145,10 @@ class Sudoku extends Component {
 		return Math.floor(Math.random()*this.N)+1;
 	}
 
-	solve = (mat) => {
+	solve = (mat, count) => {
+		if(count >= this.maxIterations)
+			return null;
+
 		let emptySpot = this.nextEmptySpot(mat);
 		let row = emptySpot[0];
 		let col = emptySpot[1];
@@ -158,7 +162,7 @@ class Sudoku extends Component {
 		nums.forEach(num => {
 			if(this.checkValue(mat, row, col, num)){
 				mat[row][col] = num;
-				this.solve(mat);
+				this.solve(mat, count+1);
 			}
 		});
 
@@ -185,7 +189,7 @@ class Sudoku extends Component {
 	}
 
 	toggleComplete = () => {
-		this.showComplete = !this.showComplete;
+		this.setState({showSolution: !this.state.showSolution});
 	}
 
 	checkInput = (i, j, e) => {
@@ -254,9 +258,8 @@ class Sudoku extends Component {
 					<div className="spacer"></div>
 
 					<button onClick={()=>{
-							this.toggleComplete(); 
-							this.forceUpdate();
-							console.log(this.showComplete?"Showing solution":"Hiding solution");
+							this.toggleComplete();
+							console.log(!this.state.showSolution?"Showing solution":"Hiding solution");
 						}}>{btnText}</button>
 
 					<Toggle onToggle={(isActive) => {this.setState({realTimeCorrection: isActive})}}/>
