@@ -9,7 +9,7 @@ class Sudoku extends Component {
 	mat = null;
 	matIncomplete = null;
 	N = 9; // number of columns/rows.
-	K = 40; // No. Of missing digits
+	K = 35; // No. Of missing digits
 	SRN = -1; // square root of N
 	maxIterations = 9999;
 
