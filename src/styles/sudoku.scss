@@ -7,7 +7,7 @@
 		border-collapse: collapse;
 		border: 2px solid black;
 
-		font-size: min(8vw, 8vh);
+		font-size: min(8vw, 8vh, 3rem);
 
 		td {
 			width: 2.25ch;
@@ -39,7 +39,6 @@
 			overflow: hidden;
 
 			text-align: center;
-			vertical-align: middle;
 
 			resize: none;
 			border: none;
@@ -53,12 +52,14 @@
 
 			background-color: transparent;
 
-			&.wrong {
-				background-color: #ff999990;
-			}
+			.realtime{
+				.wrong {
+					background-color: #ff999990;
+				}
 
-			&.correct {
-				background-color: #99ff9990;
+				.correct {
+					background-color: #99ff9990;
+				}
 			}
 		}
 
@@ -69,12 +70,24 @@
 
 	.buttons{
 		display: flex;
+		flex-wrap: wrap;
 		justify-content: space-between;
 
 		margin-top: 1em;
 
 		button{
 			font-size: inherit;
+
+			padding: 0.5em;
+			margin: 0;
+		}
+
+		& > * {
+			flex: 1 1 33%;
+		}
+
+		& > .spacer {
+			flex-basis: 5%;
 		}
 	}
 }
