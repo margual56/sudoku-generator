@@ -7,6 +7,8 @@
 		border-collapse: collapse;
 		border: 2px solid black;
 
+		margin: auto;
+
 		font-size: min(8vw, 8vh, 3rem);
 
 		td {
@@ -28,36 +30,36 @@
 			&:nth-child(3n):not(:last-child) {
 				border-right: 2px solid black;
 			}
-		}
 
-		textarea {
-			display: block;
+			textarea {
+				display: block;
 
-			width: inherit;
-			height: calc(100% + 1px);
+				width: inherit;
+				height: calc(100% + 1px);
 
-			overflow: hidden;
+				overflow: hidden;
 
-			text-align: center;
+				text-align: center;
 
-			resize: none;
-			border: none;
+				resize: none;
+				border: none;
 
-			font-weight: inherit;
-			font-size: inherit;
-			font-family: inherit;
+				font-weight: inherit;
+				font-size: inherit;
+				font-family: inherit;
 
-			padding: 0;
-			margin: 0;
+				padding: 0;
+				margin: 0;
 
-			background-color: transparent;
+				background-color: transparent;
+			}
 
-			.realtime{
-				.wrong {
+			&.realtime{
+				textarea.wrong {
 					background-color: #ff999990;
 				}
 
-				.correct {
+				textarea.correct {
 					background-color: #99ff9990;
 				}
 			}

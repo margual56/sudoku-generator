@@ -1,6 +1,7 @@
 import { Component } from 'react';
 
 import Toggle from './Toggle';
+import NumberInput from './NumberInput';
 
 import '../styles/sudoku.scss';
 
@@ -17,7 +18,7 @@ class Sudoku extends Component {
 
 		this.state = {
 			showSolution: props.showSolution || false,
-			realTimeCorrection: true
+			realTimeCorrection: false
 		}
 
 		let tmp = Array(this.N);
@@ -189,30 +190,10 @@ class Sudoku extends Component {
 
 	checkInput = (i, j, e) => {
 		let val = Number(e.target.value);
-		let correct = this.mat[i][j] === val;
-		let empty = "" === e.target.value;
+		let isCorrect = this.mat[i][j] === val;
+		//let empty = "" === e.target.value;
 
-		let classList = e.target.className.split(' ');
-		let correct = classList.indexOf('correct');
-		let wrong = classList.indexOf('wrong');
-
-		if(!empty){
-			// TODO: gotta add the classlist thing here
-
-			console.log(val + " is the " + (correct?"correct":"wrong") + " answer");
-
-			e.target.className += correct?"correct":"wrong";
-		}else{
-			if(correct){
-				classList.splice(correct, 1);
-			}
-
-			if(wrong){
-				classList.splice(wrong, 1);
-			}
-
-			e.target.className = classList.join(' ');
-		}
+		return isCorrect;
 	}
 
 	render(){
@@ -238,15 +219,11 @@ class Sudoku extends Component {
 						);
 					}else{
 						return (
-							<td className="empty" key={j}>
-								<textarea 
-									className={this.state.realTimeCorrection?"realtime":""}
-									onBlur={e => this.checkInput(i, j, e)} 
-									maxLength={1} 
-									cols={1} 
-									rows={1}
-								>
-								</textarea>
+							<td className={"empty" + (this.state.realTimeCorrection?" realtime":"")} key={j}>
+								<NumberInput
+									realtime={this.state.realTimeCorrection}
+									correction={e => {return this.checkInput(i, j, e)}}
+								/>
 							</td>
 						);
 					}
@@ -282,7 +259,7 @@ class Sudoku extends Component {
 							console.log(this.showComplete?"Showing solution":"Hiding solution");
 						}}>{btnText}</button>
 
-					<Toggle active={false} onToggle={(isActive) => {this.setState({realTimeCorrection: isActive})}}/>
+					<Toggle onToggle={(isActive) => {this.setState({realTimeCorrection: isActive})}}/>
 				</div>
 
 			</div>
