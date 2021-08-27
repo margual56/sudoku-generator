@@ -4,8 +4,6 @@ class NumberInput extends Component {
 	constructor(props){
 		super(props);
 
-		console.log(props.className);
-
 		this.state = {
 			correction: props.correction || null,
 			classList: (props.className || "").split(' ')
@@ -42,7 +40,11 @@ class NumberInput extends Component {
 		return (
 			<textarea 
 				className={this.state.classList.join(" ")}
-				onBlur={(e) => this.checkInput(e)} 
+				onBlur={(e) => this.checkInput(e)}
+				onKeyPress={(e) => {
+					if(window.isNaN(e.key))
+						e.preventDefault()
+				}}
 				maxLength={1} 
 				cols={1} 
 				rows={1}
