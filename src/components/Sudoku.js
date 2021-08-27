@@ -1,6 +1,8 @@
 import { Component } from 'react';
 
-import './styles/sudoku.scss';
+import Toggle from './Toggle';
+
+import '../styles/sudoku.scss';
 
 class Sudoku extends Component {
 	mat = null;
@@ -8,11 +10,15 @@ class Sudoku extends Component {
 	N = 9; // number of columns/rows.
 	K = 60; // No. Of missing digits
 	SRN = -1; // square root of N
-	showComplete = false;
 
     // Constructor
     constructor(props) {
 		super(props);
+
+		this.state = {
+			showSolution: props.showSolution || false,
+			realTimeCorrection: true
+		}
 
 		let tmp = Array(this.N);
 		for(let i = 0; i<this.N; i++){
@@ -186,19 +192,33 @@ class Sudoku extends Component {
 		let correct = this.mat[i][j] === val;
 		let empty = "" === e.target.value;
 
+		let classList = e.target.className.split(' ');
+		let correct = classList.indexOf('correct');
+		let wrong = classList.indexOf('wrong');
+
 		if(!empty){
+			// TODO: gotta add the classlist thing here
+
 			console.log(val + " is the " + (correct?"correct":"wrong") + " answer");
 
-			e.target.className = correct?"correct":"wrong";
+			e.target.className += correct?"correct":"wrong";
 		}else{
-			e.target.className = "";
+			if(correct){
+				classList.splice(correct, 1);
+			}
+
+			if(wrong){
+				classList.splice(wrong, 1);
+			}
+
+			e.target.className = classList.join(' ');
 		}
 	}
 
 	render(){
 		let rows;
 		
-		if(this.showComplete){
+		if(this.state.showSolution){
 			rows = this.mat.map((item, i) => {
 				let entry = item.map((element, j) => {
 					return ( 
@@ -218,7 +238,16 @@ class Sudoku extends Component {
 						);
 					}else{
 						return (
-							<td className="empty" key={j}><textarea onBlur={e => this.checkInput(i, j, e)} maxLength={1} cols={1} rows={1}></textarea></td>
+							<td className="empty" key={j}>
+								<textarea 
+									className={this.state.realTimeCorrection?"realtime":""}
+									onBlur={e => this.checkInput(i, j, e)} 
+									maxLength={1} 
+									cols={1} 
+									rows={1}
+								>
+								</textarea>
+							</td>
 						);
 					}
 				});
@@ -245,11 +274,15 @@ class Sudoku extends Component {
 							console.log("reloading");
 						}}>Refresh</button>
 
+					<div className="spacer"></div>
+
 					<button onClick={()=>{
 							this.toggleComplete(); 
 							this.forceUpdate();
 							console.log(this.showComplete?"Showing solution":"Hiding solution");
 						}}>{btnText}</button>
+
+					<Toggle active={false} onToggle={(isActive) => {this.setState({realTimeCorrection: isActive})}}/>
 				</div>
 
 			</div>

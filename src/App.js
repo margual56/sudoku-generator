@@ -1,4 +1,4 @@
-import Sudoku from './Sudoku';
+import Sudoku from './components/Sudoku';
 
 import './styles/main.scss';
 
